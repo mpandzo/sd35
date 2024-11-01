@@ -22,9 +22,9 @@ make install
 
 ### Permissions on HuggingFace
 
-  Make sure you are granted repo access permissions for the [stable-diffusion-3.5-medium](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) model.
-  In your profile settings under Access Tokens create an access token with public repo read access as well as read access to the stable-diffusion-3.5-medium repo itself ([More info](https://huggingface.co/stabilityai/stable-diffusion-3-medium-diffusers/discussions/26)).
-  Copy your access token and store it in an .env file as follows:
+Make sure you are granted repo access permissions for the [stable-diffusion-3.5-medium](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) model.  
+In your profile settings under Access Tokens create an access token with public repo read access as well as read access to the stable-diffusion-3.5-medium repo itself ([More info](https://huggingface.co/stabilityai/stable-diffusion-3-medium-diffusers/discussions/26)).  
+Copy your access token and store it in an .env file as follows:  
 
 ```
 HF_TOKEN=<Your access token here>
