@@ -1,4 +1,4 @@
-# This is a quick setup to run Stable Diffusion 3.5 using Gradio on your local machine.
+# Local Stable Diffusion 3.5 using Gradio.
 
 ## Setup
 
