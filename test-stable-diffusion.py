@@ -34,9 +34,7 @@ device = (
 pipe = pipe.to(device)
 print(f"Pipeline moved to device: {pipe.device}")
 
-seed = None
-if seed is None:
-    seed = int.from_bytes(os.urandom(2), "big")
+seed = int.from_bytes(os.urandom(2), "big")
 print(f"Using seed: {seed}")
 generator = torch.Generator(device=device).manual_seed(seed)
 
