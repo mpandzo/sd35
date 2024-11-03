@@ -4,6 +4,7 @@ import torch
 import os
 import psutil
 from dotenv import load_dotenv
+import accelerate
 
 SD3_MODEL_CACHE = "./sd3-cache"
 
@@ -15,33 +16,28 @@ if not os.getenv("HF_TOKEN"):
 
 os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
 
-pipe = StableDiffusion3Pipeline.from_pretrained(
+accelerator = accelerate.Accelerator(
+    gradient_accumulation_steps = 1,
+)
+
+print(f"Pipeline using device: {accelerator.device}")
+
+pipeline = StableDiffusion3Pipeline.from_pretrained(
     "stabilityai/stable-diffusion-3.5-medium",
     torch_dtype=torch.float16,
     cache_dir=SD3_MODEL_CACHE,
 )
+pipeline = pipeline.to(accelerator.device)
 
 # Check available system RAM and enable attention slicing if less than 64 GB
 if (available_ram := psutil.virtual_memory().available / (1024**3)) < 64:
-    pipe.enable_attention_slicing()
+    pipeline.enable_attention_slicing()
 
-# Automatically infer the device and prioritize "mps" if available
-device = (
-    "mps"
-    if torch.backends.mps.is_available()
-    else "cuda" if torch.cuda.is_available() else "cpu"
-)
-pipe = pipe.to(device)
-print(f"Pipeline moved to device: {pipe.device}")
-
-seed = int.from_bytes(os.urandom(2), "big")
-print(f"Using seed: {seed}")
-generator = torch.Generator(device=device).manual_seed(seed)
+generator = torch.Generator(device=accelerator.device).manual_seed(0)
 
 def generate_image(prompt):
-    with torch.device(device):
-        print(f"Current device: {torch.device(device)}")
-        image = pipe(
+    with torch.device(accelerator.device):
+        image = pipeline(
             prompt=prompt,
             height=(height := 512),
             width=(width := 512),
