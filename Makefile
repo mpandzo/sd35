@@ -22,3 +22,5 @@ test-gradio:
 	make activate && python test-gradio.py
 
 # pip install sentencepiece python-dotenv protobuf psutil accelerate transformers diffusers torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/torch_stable.html
+install-base:
+	make activate && pip install --upgrade gradio && pip install datasets peft sentencepiece python-dotenv protobuf psutil accelerate transformers diffusers torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/torch_stable.html
